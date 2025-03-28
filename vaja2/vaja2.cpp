@@ -73,6 +73,46 @@ void KMP(const string& text, const string& vzorec) {
     delete[] kmpNext;
 }
 
+void Sunday(const string& text, const string& vzorec) {
+    int m = vzorec.length();
+    int n = text.length();
+
+    if (m == 0 || n == 0) {
+        return;
+    }
+
+    int BCH[256];
+
+    for (int i = 0; i < 256; i++) {
+        BCH[i] = m + 1;
+    }
+
+    for (int i = 0; i < m; i++) {
+        BCH[(unsigned char)vzorec[i]] = m - i;
+    }
+
+    int j = 0;
+    while (j <= n - m) {
+        int i = 0;
+        while (i < m && vzorec[i] == text[j + i]) {
+            i++;
+        }
+
+        if (i == m) {
+            out << j << ' ';
+            j += m;
+        }
+        else {
+            if (j + m < n) {
+                j += BCH[(unsigned char)text[j + m]];
+            }
+            else {
+                break;
+            }
+        }
+    }
+}
+
 
 int main(int argc, const char* const argv[]) {
 	if (argc != 4) {
@@ -91,7 +131,7 @@ int main(int argc, const char* const argv[]) {
 		KMP(text, vzorec);
 	}
 	else {
-		//Sunday
+        Sunday(text, vzorec);
 	}
 
 
